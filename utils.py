@@ -516,7 +516,7 @@ def init_distributed_mode(args):
         os.environ['MASTER_PORT'] = '29500'
 
     dist.init_process_group(
-        backend="gloo",  # gloo backend works for both CPU and GPU
+        backend="nccl",  # gloo backend works for both CPU and GPU
         init_method=args.dist_url,
         world_size=args.world_size,
         rank=args.rank,
