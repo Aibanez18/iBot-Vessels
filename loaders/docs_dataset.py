@@ -68,7 +68,10 @@ class HistoricalDocuments(Dataset):
         plt.show()
 
     def change_path(self, old_path, new_path):
-        self.df['filename'] = self.df['filename'].apply(lambda x: x.replace(old_path, new_path))
+        if old_path == '/':
+            self.df['filename'] = self.df['filename'].apply(lambda x: new_path.join(x))
+        else:
+            self.df['filename'] = self.df['filename'].apply(lambda x: x.replace(old_path, new_path))
 
 class HistoricalDocFolderMask(HistoricalDocuments):
     def __init__(self, *args, patch_size, pred_ratio, pred_ratio_var, pred_aspect_ratio, 
