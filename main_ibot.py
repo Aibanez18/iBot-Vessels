@@ -149,6 +149,8 @@ def get_args_parser():
     parser.add_argument("--local_rank", default=0, type=int, help="Please ignore and do not set this argument.")
     parser.add_argument('--ckpt_path_student', default="ibot_pretrained_student.pth", type=str, help='Path to pretrained student (only for LoRA)')
     parser.add_argument('--ckpt_path_teacher', default="ibot_pretrained_teacher.pth", type=str, help='Path to pretrained teacher (only for LoRA)')
+    parser.add_argument('--old_path', default="/media/chr/Datasets/HORAE/imgs/", type=str, help='Old path where the data was located')
+    parser.add_argument('--new_path', default="/home/data/cstears/horae/imgs/", type=str, help='New path where the data is located')
     return parser
 
 def train_ibot(args):
@@ -168,6 +170,8 @@ def train_ibot(args):
     pred_size = args.patch_size * 8 if 'swin' in args.arch else args.patch_size
     dataset = HistoricalDocFolderMask(
         pkl_path=args.data_path,
+        old_path=args.old_path,
+        new_path=args.new_path,
         transform=transform,
         patch_size=pred_size,
         pred_ratio=args.pred_ratio,

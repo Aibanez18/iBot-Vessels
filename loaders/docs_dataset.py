@@ -15,7 +15,7 @@ from PIL import Image, ImageOps
 from torch.utils.data import Dataset
 
 class HistoricalDocuments(Dataset):
-    def __init__(self, pkl_path,
+    def __init__(self, pkl_path, old_path, new_path,
                  max_size=224, transform=None):
         try:
             self.df = pd.DataFrame(pd.read_pickle(pkl_path))
@@ -25,6 +25,9 @@ class HistoricalDocuments(Dataset):
             raise e 
         self.max_size = max_size
         self.transform = transform
+
+        # Cambiamos el path de las imágenes
+        self.change_path(old_path, new_path)
 
     def __len__(self):
         return len(self.df)
@@ -63,6 +66,9 @@ class HistoricalDocuments(Dataset):
         ax[2].axis('off')
 
         plt.show()
+
+    def change_path(self, old_path, new_path):
+        self.df['filename'] = self.df['filename'].apply(lambda x: x.replace(old_path, new_path))
 
 class HistoricalDocFolderMask(HistoricalDocuments):
     def __init__(self, *args, patch_size, pred_ratio, pred_ratio_var, pred_aspect_ratio, 
