@@ -10,5 +10,5 @@
 .venv
 
 *.pth
-data/
+dataset/
 __pycache__/

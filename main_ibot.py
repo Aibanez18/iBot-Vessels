@@ -105,7 +105,7 @@ def get_args_parser():
     parser.add_argument('--clip_grad', type=float, default=0.3, help="""Maximal parameter
         gradient norm if using gradient clipping. Clipping with norm .3 ~ 1.0 can
         help optimization for larger ViT architectures. 0 for disabling.""")
-    parser.add_argument('--batch_size_per_gpu', default=2, type=int,
+    parser.add_argument('--batch_size_per_gpu', default=16, type=int,
         help='Per-GPU batch-size : number of distinct images loaded on one GPU.')
     parser.add_argument('--epochs', default=50, type=int, help='Number of epochs of training.')
     parser.add_argument('--freeze_last_layer', default=3, type=int, help="""Number of epochs
@@ -138,17 +138,17 @@ def get_args_parser():
         Used for small local view cropping of multi-crop.""")
 
     # Misc
-    parser.add_argument('--data_path', default='D:/Universidad/Proyecto de Titulo/iDoc/ceramic_dataset.pkl', type=str,
+    parser.add_argument('--data_path', default='file_paths.pkl', type=str,
         help='Please specify path to the ImageNet training data.')
-    parser.add_argument('--output_dir', default="D:/Universidad/Proyecto de Titulo/iDoc/output", type=str, help='Path to save logs and checkpoints.')
+    parser.add_argument('--output_dir', default="output", type=str, help='Path to save logs and checkpoints.')
     parser.add_argument('--saveckp_freq', default=3, type=int, help='Save checkpoint every x epochs.')
     parser.add_argument('--seed', default=0, type=int, help='Random seed.')
-    parser.add_argument('--num_workers', default=0, type=int, help='Number of data loading workers per GPU.')
+    parser.add_argument('--num_workers', default=8, type=int, help='Number of data loading workers per GPU.')
     parser.add_argument("--dist_url", default="env://", type=str, help="""url used to set up
         distributed training; see https://pytorch.org/docs/stable/distributed.html""")
     parser.add_argument("--local_rank", default=0, type=int, help="Please ignore and do not set this argument.")
-    parser.add_argument('--ckpt_path_student', default="D:/Universidad/Proyecto de Titulo/iDoc/ibot_pretrained_student.pth", type=str, help='Path to pretrained student (only for LoRA)')
-    parser.add_argument('--ckpt_path_teacher', default="D:/Universidad/Proyecto de Titulo/iDoc/ibot_pretrained_teacher.pth", type=str, help='Path to pretrained teacher (only for LoRA)')
+    parser.add_argument('--ckpt_path_student', default="ibot_pretrained_student.pth", type=str, help='Path to pretrained student (only for LoRA)')
+    parser.add_argument('--ckpt_path_teacher', default="ibot_pretrained_teacher.pth", type=str, help='Path to pretrained teacher (only for LoRA)')
     return parser
 
 def train_ibot(args):
