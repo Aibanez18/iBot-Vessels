@@ -11,3 +11,4 @@
 
 *.pth
 data/
+__pycache__/
