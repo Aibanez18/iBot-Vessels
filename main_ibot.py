@@ -97,9 +97,9 @@ def get_args_parser():
         to use half precision for training. Improves training time and memory requirements,
         but can provoke instability and slight decay of performance. We recommend disabling
         mixed precision if the loss is unstable, if reducing the patch size or if training with bigger ViTs.""")
-    parser.add_argument('--weight_decay', type=float, default=0.04, help="""Initial value of the
+    parser.add_argument('--weight_decay', type=float, default=0.01, help="""Initial value of the
         weight decay. With ViT, a smaller value at the beginning of training works well.""")
-    parser.add_argument('--weight_decay_end', type=float, default=0.4, help="""Final value of the
+    parser.add_argument('--weight_decay_end', type=float, default=0.1, help="""Final value of the
         weight decay. We use a cosine schedule for WD and using a larger decay by
         the end of training improves performance for ViTs.""")
     parser.add_argument('--clip_grad', type=float, default=0.3, help="""Maximal parameter
@@ -388,6 +388,7 @@ def train_ibot(args):
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))
+    dist.destroy_process_group()
 
 
 def train_one_epoch(student, teacher, teacher_without_ddp, ibot_loss, data_loader,

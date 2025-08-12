@@ -11,4 +11,6 @@
 
 *.pth
 dataset/
+checkpoints/
+eval/
 __pycache__/

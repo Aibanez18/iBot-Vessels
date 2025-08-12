@@ -335,13 +335,13 @@ class PlainMultiheadAttentionLoRA(nn.Module):
         return self.forward_module(query, key, value, **kwargs) 
 
 
-def apply_lora(model, params=['q', 'k', 'v'], r=64, alpha=1, dropout_rate=0.25):
+def apply_lora(model, params=['q', 'k', 'v'], r=64, alpha=1, dropout_rate=0.05):
     list_lora_layers = []
-    indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     vision_encoder = model
     for i, block in enumerate(vision_encoder.blocks):
-        print(f"Residual Attention Block {i}: {block}")
         if i in indices:
+            print(f"Residual Attention Block {i}")
             for name, submodule in block.named_children():
                 if isinstance(submodule, Attention):
                     new_multi_head_lora = PlainMultiheadAttentionLoRA(
@@ -371,10 +371,11 @@ def lora_trainable(model, bias='all'):
 
 def vit_lora(ckpt_path=None, **kwargs):
     model = vit_base(**kwargs)
+    apply_lora(model)
     if ckpt_path is not None:
         model_checkpoint = torch.load(ckpt_path)
         model.load_state_dict(model_checkpoint['state_dict'])
-    apply_lora(model)
+    
     print("LoRA applied")
     model.apply(lora_trainable)
     return model
