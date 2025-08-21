@@ -138,19 +138,19 @@ def get_args_parser():
         Used for small local view cropping of multi-crop.""")
 
     # Misc
-    parser.add_argument('--data_path', default='file_paths.pkl', type=str,
+    parser.add_argument('--data_path', default='/home/aibanez/sam_detector/file_paths.pkl', type=str,
         help='Please specify path to the ImageNet training data.')
-    parser.add_argument('--output_dir', default="output", type=str, help='Path to save logs and checkpoints.')
+    parser.add_argument('--output_dir', default="checkpoints/", type=str, help='Path to save logs and checkpoints.')
     parser.add_argument('--saveckp_freq', default=3, type=int, help='Save checkpoint every x epochs.')
     parser.add_argument('--seed', default=0, type=int, help='Random seed.')
     parser.add_argument('--num_workers', default=8, type=int, help='Number of data loading workers per GPU.')
     parser.add_argument("--dist_url", default="env://", type=str, help="""url used to set up
         distributed training; see https://pytorch.org/docs/stable/distributed.html""")
     parser.add_argument("--local_rank", default=0, type=int, help="Please ignore and do not set this argument.")
-    parser.add_argument('--ckpt_path_student', default="ibot_pretrained_student.pth", type=str, help='Path to pretrained student (only for LoRA)')
-    parser.add_argument('--ckpt_path_teacher', default="ibot_pretrained_teacher.pth", type=str, help='Path to pretrained teacher (only for LoRA)')
-    parser.add_argument('--old_path', default="/media/chr/Datasets/HORAE/imgs/", type=str, help='Old path where the data was located')
-    parser.add_argument('--new_path', default="/home/data/cstears/horae/imgs/", type=str, help='New path where the data is located')
+    parser.add_argument('--ckpt_path_student', default="idoc_student.pth", type=str, help='Path to pretrained student (only for LoRA)')
+    parser.add_argument('--ckpt_path_teacher', default="idoc_teacher.pth", type=str, help='Path to pretrained teacher (only for LoRA)')
+    parser.add_argument('--old_path', default="/", type=str, help='Old path where the data was located')
+    parser.add_argument('--new_path', default="/home/aibanez/sam_detector/", type=str, help='New path where the data is located')
     return parser
 
 def train_ibot(args):
@@ -409,7 +409,7 @@ def train_one_epoch(student, teacher, teacher_without_ddp, ibot_loss, data_loade
     params_q = [param_q for name_q, param_q in zip(names_q, params_q) if name_q in names_common]
     params_k = [param_k for name_k, param_k in zip(names_k, params_k) if name_k in names_common]
 
-    for it, (images, masks) in enumerate(metric_logger.log_every(data_loader, 50, header)):
+    for it, (images, masks) in enumerate(metric_logger.log_every(data_loader, 200, header)):
         # update weight decay and learning rate according to their schedule
         it = len(data_loader) * epoch + it  # global training iteration
         for i, param_group in enumerate(optimizer.param_groups):

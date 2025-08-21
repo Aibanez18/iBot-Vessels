@@ -13,10 +13,10 @@ import torchvision.transforms as T
 class RegionProcessor:
     def __init__(self, model_name: str = "", device: str = "auto"):
         """
-        Initialize the processor with DINOv2 model.
+        Initialize the processor with model.
         
         Args:
-            model_name: DINOv2 model variant (dinov2_vits14, dinov2_vitb14, dinov2_vitl14, dinov2_vitg14)
+            model_name: Model variant
             device: Device to run on ('auto', 'cuda', 'cpu')
         """
         if device == "auto":

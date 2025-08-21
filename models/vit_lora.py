@@ -337,7 +337,7 @@ class PlainMultiheadAttentionLoRA(nn.Module):
 
 def apply_lora(model, params=['q', 'k', 'v'], r=64, alpha=1, dropout_rate=0.05):
     list_lora_layers = []
-    indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     vision_encoder = model
     for i, block in enumerate(vision_encoder.blocks):
         if i in indices:
